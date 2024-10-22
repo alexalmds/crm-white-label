@@ -9,18 +9,36 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
+    "@lottiefiles/react-lottie-player": "^3.5.4",
+    "@nextui-org/react": "^2.4.8",
+    "@nextui-org/use-infinite-scroll": "^2.1.5",
+    "@react-stately/data": "^3.11.6",
+    "@tanstack/react-query": "^5.56.2",
+    "axios": "^1.7.7",
+    "chart.js": "^4.4.4",
+    "framer-motion": "^11.9.0",
+    "lottie-react": "^2.4.0",
+    "moment": "^2.30.1",
+    "next": "14.2.13",
+    "next-themes": "^0.3.0",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
-    "next": "14.2.13"
+    "react-flow-renderer": "^10.3.17",
+    "react-icons": "^5.3.0",
+    "react-input-mask": "^2.0.4",
+    "react-quill": "^2.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-input-mask": "^3.0.5",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.13",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.13"
+    "typescript": "^5"
   }
 }
