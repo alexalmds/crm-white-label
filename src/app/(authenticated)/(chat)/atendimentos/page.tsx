@@ -23,7 +23,8 @@ const finishedChats = [
     { id: 2, name: 'Cliente 2', finishedAt: '2024-10-02T14:30:00Z', lastMessage: 'Problema resolvido.' },
 ];
 
-const messagesByCustomer = {
+
+const messagesByCustomer: { [key: number]: Message[] } = {
     1: [
         { sender: 'user', text: 'Olá! Como posso ajudar?' },
         { sender: 'client', text: 'Oi, preciso de ajuda com meu pedido.' },
@@ -41,7 +42,6 @@ const messagesByCustomer = {
         { sender: 'client', text: 'Estou com um problema no meu pagamento.' },
     ],
 };
-
 const Atendimento: React.FC = () => {
     const [activeTab, setActiveTab] = useState('em-atendimento');
     const [activeConversation, setActiveConversation] = useState<number | null>(null);
@@ -63,7 +63,6 @@ const Atendimento: React.FC = () => {
 
 
     const openChat = (clientId: number) => {
-        // Busca as mensagens do cliente no objeto messagesByCustomer
         const clientMessages = messagesByCustomer[clientId] || [];
         setMessages(clientMessages); // Define as mensagens como as do cliente clicado
         setActiveConversation(clientId); // Define a conversa ativa

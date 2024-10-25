@@ -1,18 +1,12 @@
 'use client'
 import { useEffect, useState, useContext } from 'react';
-import { makeRequest } from '../../../../axios';
+import { makeRequest } from '../../../../../axios';
 import DynamicTable from '@/components/DynamicTable.tsx';
 import DynamicModal from '@/components/DynamicModal';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/UserContext';
+import { FormaDePgto } from '@/interfaces';
 
-interface FormaDePgto {
-    id: number;
-    descricao: string;
-    tipo: string;
-    status: string;
-    data_criacao: string;
-}
 
 export default function FormasDePagamentos() {
     const [formaPgtos, setFormaPgtos] = useState<FormaDePgto[]>([]);
@@ -25,6 +19,8 @@ export default function FormasDePagamentos() {
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
     const [formaPgoToDelete, setFormPgtoToDelete] = useState<FormaDePgto | null>(null);
     const { user } = useContext(UserContext);
+    const status = [{label: "Ativo", value: 'ativo'}, {label: 'Inativo', value: 'inativo'}]
+    const paymentOptions = [{label: "Boleto", value: 'boleto'}, {label: 'Cartão de Crédito', value: 'cartao_credito'}, {label: 'Cartão de Débito', value: 'cartao_debito'}, {label: 'PIX', value: 'pix'}, {label: 'Transf. Eletrônica Disponível (TED)', value: 'ted'}]
 
     // Função para listar formas de pagamentos
     const fetchFrmPayments = async () => {
@@ -64,8 +60,8 @@ export default function FormasDePagamentos() {
                 id_empresa: selectFormaPgto ? undefined : user?.id_empresa,
                 id_forma_pagamento: selectFormaPgto ? selectFormaPgto.id : undefined, 
                 descricao: data['Descrição'],
-                tipo: data['Tipo'] === '0' ? 'boleto' : data['Tipo'] === '1' ? 'cartao_credito' : data['Tipo'] === '2' ? 'pix' :  data['Tipo'] === '3' ? 'cartao_debito' : 'ted',
-                status: data['Status'] === '0' ? 'ativo' : 'inativo',
+                tipo: data['Tipo'] ,
+                status: data['Status'],
             };
             if (selectFormaPgto) {
                 // Edita o usuário existente
@@ -113,14 +109,14 @@ export default function FormasDePagamentos() {
             {
                 type: 'select',
                 label: 'Tipo',
-                options: ['boleto', 'cartao_credito', 'pix', 'cartao_debito', 'ted'],
+                options: paymentOptions,
                 value: '',
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Tipo' ? { ...field, value } : field)),
             },
             {
                 type: 'select',
                 label: 'Status',
-                options: ['ativo', 'inativo'],
+                options: status,
                 value: '',
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)),
             },
@@ -148,14 +144,14 @@ export default function FormasDePagamentos() {
             {
                 type: 'select',
                 label: 'Tipo',
-                options: ['boleto', 'cartao_credito', 'pix', 'cartao_debito', 'ted'],
+                options: paymentOptions,
                 value: paymentMethod.tipo,
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Tipo' ? { ...field, value } : field)),
             },
             {
                 type: 'select',
                 label: 'Status',
-                options: ['ativo', 'inativo'],
+                options:status,
                 value: paymentMethod.status,
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)),
             },
@@ -256,7 +252,7 @@ export default function FormasDePagamentos() {
                         }, {});
                         handleSubmitNew(formData);
                     }}
-                    size='md'
+                    size='xl'
                 />
             )}
 

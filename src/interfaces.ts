@@ -32,3 +32,44 @@ export interface IClient {
     cep: string,
     whatsapp: string
 }
+
+
+export interface ISetor{
+    id: number,
+    titulo: string,
+    id_empresa: number,
+    descricao: string,
+    observacao: string,
+    gera_incidencia: string,
+    taxa: number,
+    percentual: number
+}
+
+export interface IServicos{
+    id: number,
+    id_empresa: number,
+    titulo: string,
+    encargos: number,
+    tributos_federais_totais: number,
+    valor: number,
+    vigencia: string,
+    id_setor: number,
+    setor_nome: string
+}
+
+
+export interface IModelContrato{
+    id: number,
+    id_empresa: number,
+    titulo: string,
+    conteudo: string,
+    data_criacao: string
+}
+
+export interface FormaDePgto {
+    id: number;
+    descricao: string;
+    tipo: string;
+    status: string;
+    data_criacao: string;
+}

@@ -1,4 +1,4 @@
-export const MailIcon = (props) => (
+export const MailIcon = (props : any) => (
     <svg
       aria-hidden="true"
       fill="none"

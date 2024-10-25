@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useContext } from 'react';
-import { Button, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tabs, Tab } from '@nextui-org/react';
-import { makeRequest } from '../../../../axios';
+import { Button, Input, Tabs, Tab } from '@nextui-org/react';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/UserContext';
 import DynamicTable from '@/components/DynamicTable.tsx';
+import { makeRequest } from '../../../../../axios';
 
 interface Intent {
     id: number;
@@ -33,8 +33,6 @@ const TrainingScreen = () => {
     // Estados de edição
     const [editingIntent, setEditingIntent] = useState<Intent | null>(null);
     const [editingPipeline, setEditingPipeline] = useState<Pipeline | null>(null);
-    const [selectIntent, setSelectedIntent] = useState<Intent | null>(null);
-    const [selectPipeline, setSelectedPipeline] = useState<Pipeline | null>(null);
     const [intentToDelete, setIntentToDelete] = useState<Intent | null>(null);
     const [pipelineToDelete, setPipelineToDelete] = useState<Pipeline | null>(null);
 

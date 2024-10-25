@@ -3,10 +3,9 @@
 import { useState, useContext, useEffect } from 'react';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import DynamicModal from '@/components/DynamicModal';
-import axios from 'axios';
 import DynamicTable from '@/components/DynamicTable.tsx';
 import { IClient } from '@/interfaces';
-import { makeRequest } from '../../../../axios';
+import { makeRequest } from '../../../../../axios';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/UserContext';
 import { FcInternal } from 'react-icons/fc';
@@ -14,7 +13,6 @@ import { FcInternal } from 'react-icons/fc';
 const CadastroCliente = () => {
   const [clients, setClients] = useState<IClient[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('principal');
   const [modalFields, setModalFields] = useState<any[]>([]);
   const [selectedClient, setSelectedClient] = useState<IClient | null>(null);
   const [showDialog, setShowDialog] = useState(false);
@@ -23,6 +21,9 @@ const CadastroCliente = () => {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [clienteToDelete, setClienteToDelete] = useState<IClient | null>(null);
   const { user } = useContext(UserContext)
+
+
+  const status = [{label: "Ativo", value: 'ativo'}, {label: 'Inativo', value: 'inativo'}]
 
 
   const fetchClientes = async () => {
@@ -75,7 +76,7 @@ const CadastroCliente = () => {
         estado: data['Estado'],
         cidade: data['Cidade'],
         whatsapp: data['WhatsApp'],
-        status: data['Status'] === '0' ? 'ativo' : 'inativo',
+        status: data['Status'],
       };
       if (selectedClient) {
         // Edita o cliente existente
@@ -134,7 +135,7 @@ const CadastroCliente = () => {
       { type: 'text', label: 'Estado', value: '', onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Estado' ? { ...field, value } : field)), },
       { type: 'text', label: 'Cidade', value: '', onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Cidade' ? { ...field, value } : field)), },
       { type: 'text', label: 'Endereço', value: '', onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Endereço' ? { ...field, value } : field)), },
-      { type: 'select', label: 'Status', options: ['ativo', 'inativo'], value: '', onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)), },
+      { type: 'select', label: 'Status', value: '', options: status, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)), },
     ]);
 
     setIsModalOpen(true)
@@ -154,7 +155,7 @@ const CadastroCliente = () => {
       { type: 'text', label: 'Estado', value: cliente.estado, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Estado' ? { ...field, value } : field)), },
       { type: 'text', label: 'Cidade', value: cliente.cidade, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Cidade' ? { ...field, value } : field)), },
       { type: 'text', label: 'Endereço', value: cliente.endereco_cliente, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Endereço' ? { ...field, value } : field)), },
-      { type: 'select', label: 'Status', options: ['ativo', 'inativo'], value: cliente.status, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)), },
+      { type: 'select', label: 'Status', options: status, value: cliente.status, onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)), },
     ]);
 
     setIsModalOpen(true)

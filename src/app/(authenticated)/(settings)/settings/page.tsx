@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Input, Button, Switch, Select, SelectItem } from '@nextui-org/react';
 import { useTheme } from "next-themes";
 import QRScanner from '@/components/QRCode';
-import { makeRequest } from '../../../../axios';
+import { makeRequest } from '../../../../../axios';
 import { UserContext } from '@/context/UserContext';
 
 const SettingsPage = () => {

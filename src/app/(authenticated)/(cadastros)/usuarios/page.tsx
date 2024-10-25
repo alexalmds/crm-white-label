@@ -1,7 +1,7 @@
 "use client"; // Se você estiver usando Next.js 13 com o modo de aplicativo
 
 import { useEffect, useState, useContext } from 'react';
-import { makeRequest } from '../../../../axios';
+import { makeRequest } from '../../../../../axios';
 import DynamicTable from '@/components/DynamicTable.tsx';
 import DynamicModal from '@/components/DynamicModal';
 import Modal from '@/components/Modal';
@@ -27,6 +27,8 @@ export default function Usuarios() {
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
     const { user } = useContext(UserContext);
+    const status = [{label: "Ativo", value: 'ativo'}, {label: 'Inativo', value: 'inativo'}]
+    const access = [{label: "Administrador", value: 'administrador'}, {label: 'Usuário', value: 'usuario'}, {label: 'Geral', value: 'geral'}]
 
     // Função para listar usuários
     const fetchUsers = async () => {
@@ -68,8 +70,8 @@ export default function Usuarios() {
                 id_usuario: selectedUser ? selectedUser.id : undefined, // Inclui o id_usuario apenas se estamos editando
                 nome: data['Nome do Usuário'],
                 email: data['Email'],
-                permissao: data['Permissão'] === '0' ? 'geral' : data['Permissão'] === '1' ? 'usuario' : 'administrador',
-                status: data['Status'] === '0' ? 'ativo' : 'inativo',
+                permissao: data['Permissão'],
+                status: data['Status'],
             };
             if (selectedUser) {
                 // Edita o usuário existente
@@ -129,14 +131,14 @@ export default function Usuarios() {
             {
                 type: 'select',
                 label: 'Permissão',
-                options: ['geral', 'usuario', 'admistrador'],
+                options: access,
                 value: '',
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Permissão' ? { ...field, value } : field)),
             },
             {
                 type: 'select',
                 label: 'Status',
-                options: ['ativo', 'inativo'],
+                options: status,
                 value: '',
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)),
             },
@@ -170,14 +172,14 @@ export default function Usuarios() {
             {
                 type: 'select',
                 label: 'Permissão',
-                options: ['geral', 'usuario', 'admistrador'],
+                options: access,
                 value: user.permissao,
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Permissão' ? { ...field, value } : field)),
             },
             {
                 type: 'select',
                 label: 'Status',
-                options: ['ativo', 'inativo'],
+                options: status,
                 value: user.status,
                 onChange: (value: string) => setModalFields(prev => prev.map(field => field.label === 'Status' ? { ...field, value } : field)),
             },

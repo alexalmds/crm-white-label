@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import {FaFacebook, FaGoogle} from 'react-icons/fa'
 
 function AuthPage({ children }: { children: React.ReactNode }) {
     return (

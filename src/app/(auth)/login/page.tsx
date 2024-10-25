@@ -1,13 +1,12 @@
 'use client';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import AuthInputs from '@/components/AuthInputs';
 import Link from 'next/link';
 import { makeRequest } from '../../../../axios';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { UserContext } from '@/context/UserContext';
-import Modal from '@/components/Modal';  // Importa o Modal
+import Modal from '@/components/Modal';
 
-function Login() {
+export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showDialog, setShowDialog] = useState(false);
@@ -15,13 +14,11 @@ function Login() {
     const [dialogType, setDialogType] = useState<'success' | 'error' | 'warning' | 'info'>('info');
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { setUser } = useContext(UserContext);
 
     const redirectTo = searchParams.get('redirect') || '/main'; // Pega a URL de redirecionamento ou usa '/main' por padrão
 
     const handleLogin = (e: any) => {
         e.preventDefault(); // Impede o comportamento padrão do botão
-        
         // Valida os campos antes de tentar o login
         if (!email || !password) {
             setDialogType('warning');
@@ -95,4 +92,4 @@ function Login() {
     );
 }
 
-export default Login;
+

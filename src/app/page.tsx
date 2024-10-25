@@ -23,9 +23,10 @@ import brand5 from '../assets/brand5.png';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
+type Lang = 'pt' | 'en' | 'es';
 
 const HomePage = () => {
-  const [lang, setLang] = useState('pt'); // Controle de idioma
+  const [lang, setLang] = useState<Lang>('pt');
   const [clientesCount, setClientesCount] = useState(0);
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
@@ -57,8 +58,7 @@ const HomePage = () => {
     router.push("/login")
   }
 
-  // Traduções simples
-  const translations = {
+  const translations: Record<Lang, { [key: string]: any }> = {
     pt: {
       header: {
         prices: 'Preços',
@@ -114,7 +114,7 @@ const HomePage = () => {
       title_controlcrm: "Control Financiero"
     },
   };
-
+  
   const t = translations[lang];
 
   return (

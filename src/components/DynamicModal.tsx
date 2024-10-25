@@ -1,13 +1,15 @@
 import React from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput } from '@nextui-org/react';
+import { CalendarDate } from "@internationalized/date";
+import SelectBox from './SelectBox'; // Importe o seu SelectBox
 
 interface InputField {
-  type: 'text' | 'email' | 'select'; // Tipos suportados
+  type: 'text' | 'email' | 'select' | 'date' | 'dateInput';
   label: string;
   placeholder?: string;
-  options?: string[]; // Para selects
-  value: string; // Valor do campo
-  onChange: (value: string) => void; // Função para alterar o valor
+  options?: { label: string; value: string }[]; // Estrutura dos options {label, value}
+  value: string | CalendarDate; 
+  onChange: (value: string | CalendarDate) => void; 
 }
 
 interface DynamicModalProps {
@@ -29,24 +31,24 @@ const DynamicModal: React.FC<DynamicModalProps> = ({ isOpen, onOpenChange, title
             {fields.map((field, index) => {
               if (field.type === 'select') {
                 return (
-                  <Select
+                  <SelectBox
+                    key={index}
+                    placeholder={field.label}
+                    options={field.options ? field.options.map(opt => ({ value: opt.value, display: opt.label })) : []}
+                    value={field.value as string}
+                    onChange={(value) => field.onChange(value)}
+                  />
+                );
+              } else if (field.type === 'dateInput') {
+                return (
+                  <DateInput
                     key={index}
                     label={field.label}
-                    selectedKeys={new Set([field.value])}
-                    onSelectionChange={(keys) => field.onChange(Array.from(keys)[0] as string)}
-                  >
-                    {field.options && field.options.length > 0 ? (
-                      field.options?.map((option, i) => (
-                        <SelectItem key={i} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))
-                    ) : (
-                      <SelectItem key={0}>
-                        Nenhuma opção disponível
-                      </SelectItem>
-                    )}
-                  </Select>
+                    placeholderValue={new CalendarDate(1995, 11, 6)}
+                    value={field.value as CalendarDate}
+                    onChange={(date) => field.onChange(date)}
+                    className="max-w-sm"
+                  />
                 );
               } else {
                 return (
@@ -54,7 +56,7 @@ const DynamicModal: React.FC<DynamicModalProps> = ({ isOpen, onOpenChange, title
                     key={index}
                     label={field.label}
                     placeholder={field.placeholder}
-                    value={field.value}
+                    value={field.value as string}
                     onChange={(e) => field.onChange(e.target.value)}
                     type={field.type}
                   />
