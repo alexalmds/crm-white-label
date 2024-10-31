@@ -58,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({
                     <DialogTitle className="text-xl font-bold mt-4">{titleDialog}</DialogTitle>
 
                     {/* Message */}
-                    <div className="mt-2 text-sm text-zinc-300">
+                    <div className="mt-2 text-sm text-white">
                         {messageDialog}
                     </div>
 

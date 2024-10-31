@@ -40,6 +40,10 @@ export default function Login() {
                         "finsolve-crm:user", 
                         JSON.stringify(resp.data.user)
                     );
+                    localStorage.setItem(
+                        "finsolve-crm:company", 
+                        JSON.stringify(resp.data.company)
+                    );
                     router.push(redirectTo)
                 }
             })

@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { NextUIProvider } from '@nextui-org/react';  // Importando o NextUIProvider
 import "./globals.css";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { CompanyContextProvider } from '@/context/CompanyContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,9 @@ export default function RootLayout({
         <QueryClientProvider>
           <NextUIProvider> {/* Envolvendo com NextUIProvider */}
             <NextThemesProvider attribute="class" defaultTheme="light">
-              <UserContextProvider>{children}</UserContextProvider>
+              <CompanyContextProvider>
+                <UserContextProvider>{children}</UserContextProvider>
+              </CompanyContextProvider>
             </NextThemesProvider>
           </NextUIProvider>
         </QueryClientProvider>

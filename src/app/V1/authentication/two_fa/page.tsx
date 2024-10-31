@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"; // Para redirecionar após sucesso
 import { makeRequest } from "../../../../../axios"; // Importa o axios configurado
 import Modal from "@/components/Modal"; // Certifique-se de importar o Modal corretamente
 import { UserContext } from "@/context/UserContext";
+import { CompanyContext } from "@/context/CompanyContext";
 
 type ModalType = 'success' | 'error' | 'warning';
 
@@ -26,7 +27,7 @@ export default function TWO_FA() {
     
     const router = useRouter();
     const { setUser } = useContext(UserContext); // Obtém o setUser do contexto para atualizar o estado global do usuário
-
+    const {setCompany} = useContext(CompanyContext);
     // Recupera o ID do usuário do localStorage quando o componente monta
     useEffect(() => {
         const storedId = localStorage.getItem("finsolve-crm:user-auth");
@@ -58,6 +59,10 @@ export default function TWO_FA() {
                     localStorage.setItem(
                         "finsolve-crm:user",
                         JSON.stringify(resp.data.user)
+                    )
+                    localStorage.setItem(
+                        "finsolve-crm:company",
+                        JSON.stringify(resp.data.company)
                     )
                     setModalData({
                         showModal: true,

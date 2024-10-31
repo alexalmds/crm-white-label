@@ -7,9 +7,6 @@
  *  neste caso é os dados recebidos do uso da tabela. Note que todos os dados devem ser genéricos, como nome, id, status, data, entre outros
  * }
  */
-
-
-
 import React from "react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useAsyncList } from "@react-stately/data";
@@ -65,6 +62,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     ativo: "success",
     inativo: "danger",
     pendente: "warning",
+    pago: "success",
+    vencido: "danger",
+    aberto: "primary"
   },
   initialVisibleColumns = INITIAL_VISIBLE_COLUMNS,
   rowsPerPageOptions = [5, 10, 15],
@@ -83,7 +83,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
-  
+
 
 
   const headerColumns = React.useMemo(() => {
@@ -94,7 +94,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
   const filteredItems = React.useMemo(() => {
     let filteredData = [...data];
-  
+
     // Filtro de pesquisa
     if (hasSearchFilter) {
       filteredData = filteredData.filter((item) => {
@@ -103,11 +103,11 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         );
       });
     }
-  
+
     // Filtro de status, garantindo que o status seja único
     if (statusFilter !== "all" && Array.from(statusFilter).length) {
       const uniqueStatuses = new Set(); // Armazena os status únicos
-  
+
       filteredData = filteredData.filter((item) => {
         const { status } = item;
         if (!uniqueStatuses.has(status) && Array.from(statusFilter).includes(status)) {
@@ -117,10 +117,10 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         return false; // Ignora este item se o status já estiver no Set
       });
     }
-  
+
     return filteredData;
   }, [data, filterValue, statusFilter]);
-  
+
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -170,10 +170,10 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         const normalizedStatus = item.status.toLowerCase(); // Normalizando o valor de status
         return (
           <Chip
-            className="capitalize"
+            className="capitalize text-white"
             color={statusColorMap[item.status]} // Utilizando o status normalizado
             size="sm"
-            variant="flat"
+            variant="shadow"
           >
             {cellValue}
           </Chip>
@@ -197,6 +197,23 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
               </DropdownMenu>
             </Dropdown>
           </div>
+        );
+      case 'data_vencimento':
+        return (
+          <div className="font-bold text-blue-500">
+            {cellValue}
+          </div>
+        );
+        case "valor":
+        return (
+          <Chip
+            className="capitalize text-white"
+            color='secondary' // Utilizando o status normalizado
+            size="sm"
+            variant="shadow"
+          >
+            {cellValue}
+          </Chip>
         );
       default:
         return cellValue;
@@ -319,6 +336,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     onSearchChange,
     onRowsPerPageChange,
     data.length,
+    onAddNew
   ]);
 
   const bottomContent = React.useMemo(() => {

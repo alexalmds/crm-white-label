@@ -34,8 +34,8 @@ function Header() {
     });
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([
-        { message: 'Notificação 1: Você tem uma nova mensagem.', time: '5 minutos atrás', read: false },
-        { message: 'Notificação 2: Seu pagamento foi processado.', time: '10 minutos atrás', read: true },
+        { message: 'Notificação 1: Você tem uma nova mensagem.', time: '5 minutos atrás', read: true },
+        { message: 'Notificação 2: Seu pagamento foi processado.', time: '10 minutos atrás', read: false },
         { message: 'Notificação 3: Lembrete: Reunião amanhã às 10h.', time: '15 minutos atrás', read: false },
     ]);
 
@@ -52,6 +52,7 @@ function Header() {
             setUser(undefined);
             localStorage.removeItem("finsolve-crm:user");
             localStorage.removeItem("finsolve-crm:-auth");
+            localStorage.removeItem("finsolve-crm:company");
             router.push("/");
         }
     });
@@ -116,10 +117,9 @@ function Header() {
                     </button>
                     {showDropdowns.lancamentos && (
                         <div className="absolute bg-white text-black mt-2 rounded shadow-lg p-2 z-10 whitespace-nowrap">
-                            <Link href="/baixa" className="block p-1 hover:bg-gray-200">Baixa</Link>
-                            <Link href="/gerar-2via" className="block p-1 hover:bg-gray-200">Gerar 2ª Via</Link>
-                            <Link href="/negativacao" className="block p-1 hover:bg-gray-200">Negativação</Link>
-                            <Link href="/renegociacao" className="block p-1 hover:bg-gray-200">Renegociação</Link>
+                            <Link href="/lancamentos/cobrancas" className="block p-1 hover:bg-gray-200">Cobranças</Link>
+                            <Link href="/lancamentos/negativacao" className="block p-1 hover:bg-gray-200">Negativação</Link>
+                            <Link href="/lancamentos/renegociacao" className="block p-1 hover:bg-gray-200">Renegociação</Link>
                         </div>
                     )}
                 </div>

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { CalendarDate } from "@internationalized/date";
 import SelectBox from './SelectBox'; // Importe o seu SelectBox
 
 interface InputField {
-  type: 'text' | 'email' | 'select' | 'date' | 'dateInput';
+  type: 'text' | 'email' | 'select' | 'autoComplete' | 'dateInput';
   label: string;
   placeholder?: string;
   options?: { label: string; value: string }[]; // Estrutura dos options {label, value}
-  value: string | CalendarDate; 
-  onChange: (value: string | CalendarDate) => void; 
+  value: string | CalendarDate;
+  onChange: (value: string | CalendarDate) => void;
+  required: boolean;
 }
 
 interface DynamicModalProps {
@@ -50,9 +51,25 @@ const DynamicModal: React.FC<DynamicModalProps> = ({ isOpen, onOpenChange, title
                     className="max-w-sm"
                   />
                 );
-              } else {
+              }
+              else if (field.type === 'autoComplete') {
+                return (
+                  <Autocomplete
+                    isRequired={field.required}
+                    label={field.label}
+                    defaultItems={field.options}
+                    placeholder={field.placeholder}
+                    className="max-w-xs"
+                    onSelectionChange={(value: any) => field.onChange(value)}
+                  >
+                    {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
+                  </Autocomplete>
+                );
+              }
+              else {
                 return (
                   <Input
+                    isRequired={field.required}
                     key={index}
                     label={field.label}
                     placeholder={field.placeholder}

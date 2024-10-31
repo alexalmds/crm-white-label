@@ -73,3 +73,41 @@ export interface FormaDePgto {
     status: string;
     data_criacao: string;
 }
+
+export interface ICobrancas{
+    id: number,
+    nome_cliente: string,
+    id_cliente: number,
+    descricao: string,
+    vencimento: string,
+    id_cobranca_asaas: string,
+    valor: string,
+    status: string,
+}
+
+export interface IBillingData {
+    id: number;
+    id_boleto: string;
+    id_cliente: number;
+    id_empresa: number;
+    data_emissao: string;
+    data_vencimento: string;
+    valor: string;
+    status: string;
+    ultima_notificacao: string;
+    proxima_notificacao: string;
+    sincronizado_em: string;
+    nome_cliente: string;
+    customerId: string;
+    whatsapp: string;
+    email_cliente?: string | null;
+    telefone_cliente?: string | null;
+    descricao?: string | null;
+    tipo_juros?: string | null;
+    tipo_multa?: string | null;
+    valor_juros?: string | null;
+    valor_multa?: string | null;
+    forma_pagamento_id: number;
+    forma_pagamento: string;
+    installment: number;
+}
