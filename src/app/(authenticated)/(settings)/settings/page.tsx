@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import QRScanner from '@/components/QRCode';
 import { makeRequest } from '../../../../../axios';
 import { UserContext } from '@/context/UserContext';
+import AccessDenied from '@/components/AccessDenied';
 
 const SettingsPage = () => {
     const [activeTab, setActiveTab] = useState(0);
@@ -88,58 +89,59 @@ const SettingsPage = () => {
             {/* Conteúdo das seções */}
             <div className="w-3/4 p-10 bg-white dark:bg-slate-700">
                 {activeTab === 0 && (
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">Integrações</h2>
-                        {asaasActiveIntegration || openApiActiveIntegration ? (
-                            <>
-                                {/* Asaas Key */}
-                                {asaasActiveIntegration && (
-                                    <>
-                                        <div className="mb-5">
-                                            <label className="block text-slate-700 dark:text-slate-300 mb-2">Chave API Asaas:</label>
-                                            <Input
-                                                fullWidth
-                                                value={asaasApiKey}
-                                                onChange={(e) => setAsaasApiKey(e.target.value)}
-                                                placeholder="Insira sua chave API do Asaas"
-                                                className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-                                            />
-                                        </div>
-                                        <div className="mb-5">
-                                            <label className="block text-slate-700 dark:text-slate-300 mb-2">Modo Asaas:</label>
-                                            <Select
-                                                placeholder={asaasMode}
-                                                className="w-full bg-slate-100 dark:bg-slate-800 dark:text-white"
-                                                value={asaasMode}
-                                                onChange={(value: any) => setAsaasMode(value)}
-                                            >
-                                                <SelectItem key="sandbox" value="sandbox">Sandbox</SelectItem>
-                                                <SelectItem key="production" value="production">Produção</SelectItem>
-                                            </Select>
-                                        </div>
-                                    </>
-                                )}
+                    // <div>
+                    //     <h2 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">Integrações</h2>
+                    //     {asaasActiveIntegration || openApiActiveIntegration ? (
+                    //         <>
+                    //             {/* Asaas Key */}
+                    //             {asaasActiveIntegration && (
+                    //                 <>
+                    //                     <div className="mb-5">
+                    //                         <label className="block text-slate-700 dark:text-slate-300 mb-2">Chave API Asaas:</label>
+                    //                         <Input
+                    //                             fullWidth
+                    //                             value={asaasApiKey}
+                    //                             onChange={(e) => setAsaasApiKey(e.target.value)}
+                    //                             placeholder="Insira sua chave API do Asaas"
+                    //                             className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
+                    //                         />
+                    //                     </div>
+                    //                     <div className="mb-5">
+                    //                         <label className="block text-slate-700 dark:text-slate-300 mb-2">Modo Asaas:</label>
+                    //                         <Select
+                    //                             placeholder={asaasMode}
+                    //                             className="w-full bg-slate-100 dark:bg-slate-800 dark:text-white"
+                    //                             value={asaasMode}
+                    //                             onChange={(value: any) => setAsaasMode(value)}
+                    //                         >
+                    //                             <SelectItem key="sandbox" value="sandbox">Sandbox</SelectItem>
+                    //                             <SelectItem key="production" value="production">Produção</SelectItem>
+                    //                         </Select>
+                    //                     </div>
+                    //                 </>
+                    //             )}
 
-                                {/* OpenAPI Key */}
-                                {openApiActiveIntegration && (
-                                    <div className="mb-5">
-                                    <label className="block text-slate-700 dark:text-slate-300 mb-2">Chave API OpenAI:</label>
-                                    <Input
-                                        fullWidth
-                                        value={gptKey}
-                                        onChange={(e) => setAsaasApiKey(e.target.value)}
-                                        placeholder="Insira sua chave API do OpenAI"
-                                        className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
-                                    />
-                                </div>
-                                )}
+                    //             {/* OpenAPI Key */}
+                    //             {openApiActiveIntegration && (
+                    //                 <div className="mb-5">
+                    //                 <label className="block text-slate-700 dark:text-slate-300 mb-2">Chave API OpenAI:</label>
+                    //                 <Input
+                    //                     fullWidth
+                    //                     value={gptKey}
+                    //                     onChange={(e) => setAsaasApiKey(e.target.value)}
+                    //                     placeholder="Insira sua chave API do OpenAI"
+                    //                     className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white"
+                    //                 />
+                    //             </div>
+                    //             )}
 
-                                <Button onPress={saveSettings}>Salvar Integrações</Button>
-                            </>
-                        ) : (
-                            <p className="text-red-500 text-xl">Você não possui integrações ativas em seu plano.</p>
-                        )}
-                    </div>
+                    //             <Button onPress={saveSettings}>Salvar Integrações</Button>
+                    //         </>
+                    //     ) : (
+                    //         <p className="text-red-500 text-xl">Você não possui integrações ativas em seu plano.</p>
+                    //     )}
+                    // </div>
+                    <AccessDenied />
                 )}
 
                 {activeTab === 1 && (
@@ -157,7 +159,7 @@ const SettingsPage = () => {
 
                 {activeTab === 2 && (
                     <div>
-                        <h2 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">Notificações</h2>
+                        {/* <h2 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">Notificações</h2>
                         <div className="mb-5">
                             <label className="block text-slate-700 dark:text-slate-300 mb-2">Notificações por E-mail:</label>
                             <Switch
@@ -174,7 +176,8 @@ const SettingsPage = () => {
                                 className="bg-slate-100 dark:bg-slate-800"
                             />
                         </div>
-                        <Button onPress={saveSettings}>Salvar Notificações</Button>
+                        <Button onPress={saveSettings}>Salvar Notificações</Button> */}
+                        <AccessDenied />
                     </div>
                 )}
 

@@ -16,6 +16,7 @@ interface ModalProps {
     messageDialog: string;
     type?: AnimationType;  // 'type' é opcional, com valor padrão 'info'
     onConfirm?: () => void;
+    onCancel?: ()=> void;
     typeDlg: string;
 }
 
@@ -34,7 +35,8 @@ const Modal: React.FC<ModalProps> = ({
     messageDialog,
     type = "info",
     onConfirm,
-    typeDlg
+    typeDlg,
+    onCancel
 }) => {
     return (
         <Dialog
@@ -83,7 +85,11 @@ const Modal: React.FC<ModalProps> = ({
                                Confirmar
                             </button>
                             <button
-                                onClick={() => setShowDialog(false)}
+                                onClick={() => {setShowDialog(false);
+                                    if (onCancel){
+                                        onCancel()
+                                    }
+                                }}
                                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-all"
                             >
                                 Cancelar

@@ -27,16 +27,16 @@ const dummyData = {
 };
 
 export default function Dashboard() {
-    const [clientesInadimplentes, setClientesInadimplentes] = useState(10); // Número fictício
-    const [viasGeradas, setViasGeradas] = useState(5); // Número fictício
-    const [lucroDoMes, setLucroDoMes] = useState(1500); // Valor fictício
+    const [clientesInadimplentes, setClientesInadimplentes] = useState(0); // Número fictício
+    const [viasGeradas, setViasGeradas] = useState(0); // Número fictício
+    const [lucroDoMes, setLucroDoMes] = useState(0); // Valor fictício
 
     const graficoAtendimentosData = {
         labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
         datasets: [
             {
                 label: 'Atendimentos',
-                data: [10, 20, 15, 25],
+                data: [0, 0, 0, 0],
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
         ],
@@ -47,7 +47,7 @@ export default function Dashboard() {
         datasets: [
             {
                 label: 'Lucro',
-                data: [500, 700, 600, 900],
+                data: [0, 0, 0, 0],
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
             },
         ],
@@ -84,7 +84,7 @@ export default function Dashboard() {
             </div>
 
             {/* Tabela */}
-            <div className="bg-white shadow-md rounded-lg p-4">
+            {/* <div className="bg-white shadow-md rounded-lg p-4">
                 <h2 className="font-semibold text-lg mb-4">Últimos Atendimentos</h2>
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -106,7 +106,7 @@ export default function Dashboard() {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
         </div>
     );
 }

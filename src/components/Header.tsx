@@ -34,9 +34,7 @@ function Header() {
     });
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([
-        { message: 'Notificação 1: Você tem uma nova mensagem.', time: '5 minutos atrás', read: true },
-        { message: 'Notificação 2: Seu pagamento foi processado.', time: '10 minutos atrás', read: false },
-        { message: 'Notificação 3: Lembrete: Reunião amanhã às 10h.', time: '15 minutos atrás', read: false },
+        { message: 'Seja bem-vindo ao FinSolve CRM', time: 'a time ago', read: false },
     ]);
 
     const router = useRouter();
@@ -130,20 +128,30 @@ function Header() {
                         <FcBarChart /> Relatórios <FaCaretDown className="ml-1" />
                     </button>
                     {showDropdowns.relatorios && (
-                        <div className="absolute bg-white text-black mt-2 rounded shadow-lg p-2 z-10 whitespace-nowrap">
-                            <div className="font-semibold">Clientes</div>
-                            <Link href="/clientes-em-dia" className="block p-1 hover:bg-gray-200">Clientes em Dia</Link>
-                            <Link href="/clientes-inadimplentes" className="block p-1 hover:bg-gray-200">Clientes Inadimplentes</Link>
+                        <div className="absolute bg-white text-black mt-2 rounded shadow-lg p-4 z-10 whitespace-nowrap">
+                            {/* Relatórios de Clientes */}
+                            {/* <div className="mb-2">
+                                <div className="font-semibold mb-1 text-gray-700">Clientes</div>
+                                <Link href="/clientes-em-dia" className="block p-1 hover:bg-gray-200">Clientes em Dia</Link>
+                                <Link href="/clientes-inadimplentes" className="block p-1 hover:bg-gray-200">Clientes Inadimplentes</Link>
+                            </div>
 
-                            <div className="font-semibold mt-2">Renegociações</div>
-                            <Link href="/renegociacoes-concluidas" className="block p-1 hover:bg-gray-200">Concluídas</Link>
-                            <Link href="/renegociacoes-pendentes" className="block p-1 hover:bg-gray-200">Pendentes</Link>
-                            <Link href="/renegociacoes-vencidas" className="block p-1 hover:bg-gray-200">Vencidas</Link>
+                          
+                            <div className="mb-2">
+                                <div className="font-semibold mb-1 text-gray-700">Renegociações</div>
+                                <Link href="/renegociacoes-concluidas" className="block p-1 hover:bg-gray-200">Concluídas</Link>
+                                <Link href="/renegociacoes-pendentes" className="block p-1 hover:bg-gray-200">Pendentes</Link>
+                                <Link href="/renegociacoes-vencidas" className="block p-1 hover:bg-gray-200">Vencidas</Link>
+                            </div>
 
-                            <div className="font-semibold mt-2">Financeiro</div>
-                            <Link href="/pagamentos-concluidos" className="block p-1 hover:bg-gray-200">Pagamentos Concluídos</Link>
-                            <Link href="/pagamentos-recebidos" className="block p-1 hover:bg-gray-200">Recebidos</Link>
-                            <Link href="/pagamentos-por-periodo" className="block p-1 hover:bg-gray-200">Por Período</Link>
+                           
+                            <div>
+                                <div className="font-semibold mb-1 text-gray-700">Financeiro</div>
+                                <Link href="/pagamentos-concluidos" className="block p-1 hover:bg-gray-200">Pagamentos Concluídos</Link>
+                                <Link href="/pagamentos-recebidos" className="block p-1 hover:bg-gray-200">Recebidos</Link>
+                                <Link href="/pagamentos-por-periodo" className="block p-1 hover:bg-gray-200">Por Período</Link>
+                            </div> */}
+                            <span>Você não possui relatórios disponíveis</span>
                         </div>
                     )}
                 </div>

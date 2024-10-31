@@ -9,6 +9,7 @@ import { makeRequest } from '../../../../../axios';
 import Modal from '@/components/Modal';
 import { UserContext } from '@/context/UserContext';
 import { FcInternal } from 'react-icons/fc';
+import { CompanyContext } from '@/context/CompanyContext';
 
 const CadastroCliente = () => {
   const [clients, setClients] = useState<IClient[]>([]);
@@ -21,6 +22,7 @@ const CadastroCliente = () => {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [clienteToDelete, setClienteToDelete] = useState<IClient | null>(null);
   const { user } = useContext(UserContext)
+  const { company } = useContext(CompanyContext)
 
 
   const status = [{label: "Ativo", value: 'ativo'}, {label: 'Inativo', value: 'inativo'}]
@@ -101,10 +103,20 @@ const CadastroCliente = () => {
 
   const handleImport = async (source: string) => {
     if (source === 'asaas') {
-      // const response = await axios.get('/api/import/asaas');
-      setShowDialog(true);
-      setDialogMessage("Para importar clientes do ASAAS, selecione o modo 'Production' nas configurações > Integrações > ASAAS.");
-      setDialogType("info");
+      const formData = {
+        asaasApiKey: company?.asaas_api_key,
+        environment: company?.asaas_mode,
+        id_empresa: company?.id_empresa
+      }
+      await makeRequest.post("/clientes/integracao/asaas", formData).then((resp) => {
+        setShowDialog(true);
+        setDialogMessage(resp.data.message);
+        setDialogType("success");
+      }).catch((exception) => {
+        setShowDialog(true);
+        setDialogMessage(exception.response.data.message);
+        setDialogType("error");
+      })
       // console.log(response.data);
     } else if (source === 'xlsx') {
       // Lógica de importação XLSX

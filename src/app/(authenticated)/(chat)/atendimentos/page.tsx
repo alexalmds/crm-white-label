@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import ChatHeader from '@/components/ChatHeader';
 import ModalChat from '@/components/ModalChat';
+import AccessDenied from '@/components/AccessDenied';
 
 // Definição do tipo Message
 interface Message {
@@ -80,8 +81,9 @@ const Atendimento: React.FC = () => {
     return (
         <div className="flex flex-col h-screen w-full mt-11">
             <ChatHeader activeTab={activeTab} setActiveTab={setActiveTab}  />
-            <div className="flex p-4">
-                {/* Cards para clientes em atendimento */}
+            <AccessDenied />
+            {/* <div className="flex p-4">
+               
                 {activeTab === 'em-atendimento' ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {customersInService.map(customer => (
@@ -99,7 +101,7 @@ const Atendimento: React.FC = () => {
                             >
                                 <h2 className="text-lg font-bold">{customer.name}</h2>
                                 <p className="text-sm">{customer.status}</p>
-                                {/* Tooltip de status */}
+                               
                                 <span className="text-xs text-gray-500" title={customer.status}>
                                     {customer.status}
                                 </span>
@@ -107,7 +109,7 @@ const Atendimento: React.FC = () => {
                         ))}
                     </div>
                 ) : (
-                    /* Tabela de atendimentos finalizados */
+                    
                     <div className="overflow-x-auto w-full">
                         <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
                             <thead className="bg-gray-50">
@@ -131,7 +133,7 @@ const Atendimento: React.FC = () => {
                         </table>
                     </div>
                 )}
-            </div>
+            </div> */}
 
             {/* Modal do Chat */}
             <ModalChat

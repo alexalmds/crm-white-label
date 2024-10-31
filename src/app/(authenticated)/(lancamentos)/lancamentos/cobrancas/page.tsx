@@ -35,21 +35,23 @@ export default function Cobrancas() {
     const sendNotification = [{ label: 'Sim', value: true }, { label: 'Não', value: false }]
     const multasEjuros = [{ label: 'FIXO', value: 'FIXED' }, { label: 'PORCENTAGEM', value: 'PERCENTAGE' }]
     const [cobrancaToDelete, setCobrancaToDelete] = useState<IBillingData | null>(null)
+    const [cobrancaToLancar, setCobrancaToLancar] = useState<IBillingData | null>(null)
     const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+    const [isConfirmLancamento, setIsConfirmLancamentoOpen] = useState(false);
 
     const parcelas = [
-        {label: 'À Vista (1x)', value: 1, description: "No Available"},
-        {label: 'Duas Parcelas (2x)', value: 2, description: "No Available"},
-        {label: 'Três Parcelas (3x)', value: 3, description: "No Available"},
-        {label: 'Quatro Parcelas (4x)', value: 4, description: "No Available"},
-        {label: 'Cinco Parcelas (5x)', value: 5, description: "No Available"},
-        {label: 'Seis Parcelas (6x)', value: 6, description: "No Available"},
-        {label: 'Sete Parcelas (7x)', value: 7, description: "No Available"},
-        {label: 'Oito Parcelas (8x)', value: 8, description: "No Available"},
-        {label: 'Nove Parcelas (9x)', value: 9, description: "No Available"},
-        {label: 'Dez Parcelas (10x)', value: 10, description: "No Available"},
-        {label: 'Onze Parcelas (11x)', value: 11, description: "No Available"},
-        {label: 'Doze Parcelas (12x)', value: 12, description: "No Available"},
+        { label: 'À Vista (1x)', value: 1, description: "No Available" },
+        { label: 'Duas Parcelas (2x)', value: 2, description: "No Available" },
+        { label: 'Três Parcelas (3x)', value: 3, description: "No Available" },
+        { label: 'Quatro Parcelas (4x)', value: 4, description: "No Available" },
+        { label: 'Cinco Parcelas (5x)', value: 5, description: "No Available" },
+        { label: 'Seis Parcelas (6x)', value: 6, description: "No Available" },
+        { label: 'Sete Parcelas (7x)', value: 7, description: "No Available" },
+        { label: 'Oito Parcelas (8x)', value: 8, description: "No Available" },
+        { label: 'Nove Parcelas (9x)', value: 9, description: "No Available" },
+        { label: 'Dez Parcelas (10x)', value: 10, description: "No Available" },
+        { label: 'Onze Parcelas (11x)', value: 11, description: "No Available" },
+        { label: 'Doze Parcelas (12x)', value: 12, description: "No Available" },
     ]
 
     const fetchBoletosPendentes = async () => {
@@ -123,7 +125,8 @@ export default function Cobrancas() {
                 issueDate: formatDateToYYYYMMDD(selectedBillingData?.data_emissao),
                 dueDate: formatDateToYYYYMMDD(selectedBillingData?.data_vencimento),
                 amount_invoice: selectedBillingData?.valor,
-                id_asaas_invoice: selectedBillingData?.id_boleto
+                id_asaas_invoice: selectedBillingData?.id_boleto,
+                status: selectedBillingData?.status
             };
             await makeRequest.post("/cobrancas/baixa", formData).then((resp) => {
                 fetchBoletosPendentes();
@@ -143,6 +146,9 @@ export default function Cobrancas() {
             setShowDialog(true);
         }
     };
+
+
+
 
 
     const handleSubmitNew = async (data: any) => {
@@ -187,10 +193,54 @@ export default function Cobrancas() {
         }
     };
 
+    const handleLancamento = async (data: any) => {
+        const formatDateToYYYYMMDD = (inputDate: any) => {
+            const [day, month, year] = inputDate.split("/");
+            return `${year}-${month}-${day}`;
+        };
+        try {
+            const formData = {
+                id_empresa: user?.id_empresa,
+                usuario: user?.id_usuario,
+                environment: company?.asaas_mode,
+                asaasApiKey: company?.asaas_api_key,
+                id_cliente: selectedBillingData?.id_cliente,
+                payment_method: selectedBillingData?.forma_pagamento === 'BOLETO BANCÁRIO' ? 'BOLETO' : selectedBillingData?.forma_pagamento === 'CARTÃO DE CRÉDITO' ? 'CREDIT_CARD' : 'PIX',
+                installment: selectedBillingData?.installment,
+                value: selectedBillingData?.valor,
+                dueDate: formatDateToYYYYMMDD(selectedBillingData?.data_vencimento),
+                interestValue: selectedBillingData?.valor_multa,
+                fine: selectedBillingData?.tipo_juros,
+                fineValue: selectedBillingData?.valor_juros,
+                description: selectedBillingData?.descricao,
+                local: data ? false : true,
+                id_boleto: selectedBillingData?.id,
+                status: selectedBillingData?.status
+            };
+            await makeRequest.post("/cobrancas/lancar-sistema", formData).then((resp) => {
+                fetchBoletosPendentes();
+                setDialogMessage(resp.data.message);
+                setDialogType("success");
+                setShowDialog(true);
+            })
+                .catch((exception) => {
+                    setDialogMessage(exception.response.data.message);
+                    setDialogType("error");
+                    setShowDialog(true);
+                })
+        } catch (error) {
+            console.error("Erro dar baixa", error);
+            setDialogMessage("Erro ao Lançar e cobrança no sistema. " + error);
+            setDialogType("error");
+            setShowDialog(true);
+        }
+    };
+
 
     const handleEstornar = () => {
-        console.log("Estornar boleto:");
-        // Implementação da ação de estorno
+        setDialogMessage("Você ainda não tem permissão para estornar uma cobrança");
+        setDialogType("warning");
+        setShowDialog(true);
     };
 
     const handleGerarSegundaVia = (cobrancaId: number) => {
@@ -209,15 +259,15 @@ export default function Cobrancas() {
         // Implementação da ação de cancelamento
     };
 
-    const handleLancamento = () => {
-        console.log("Cancelar cobrança para boleto:");
-        // Implementação da ação de cancelamento
-    };
-
     const confirmDelete = () => {
         setCobrancaToDelete(selectedBillingData);
         console.log(selectedBillingData?.id)
         setIsConfirmDeleteOpen(true);
+    };
+
+    const confirmLancamento = () => {
+        setCobrancaToLancar(selectedBillingData);
+        setIsConfirmLancamentoOpen(true);
     };
 
     // Preparar dados para a tabela incluindo as ações
@@ -266,7 +316,7 @@ export default function Cobrancas() {
         { uid: 'valor', name: 'Valor' },
         { uid: 'data_emissao', name: 'Dt. Emissão' },
         { uid: 'data_vencimento', name: 'Vencimento' },
-        { uid: 'descricao', name: 'Descrição'},
+        { uid: 'descricao', name: 'Descrição' },
         { uid: 'status', name: 'Status' },
         { uid: 'actions', name: 'Ações', sortable: false },
     ];
@@ -299,6 +349,26 @@ export default function Cobrancas() {
                 />
             )}
 
+            {/* Modal de Confirmação */}
+            {isConfirmLancamento && cobrancaToLancar && (
+                <Modal
+                    showDialog={isConfirmLancamento}
+                    setShowDialog={setIsConfirmLancamentoOpen}
+                    titleDialog="Confirmação de Lançamento"
+                    messageDialog={`Confirmar lançamento no ASAAS? Uma vez lançado somente no sistema não é possivel lançar no Asaas. \n Para lançar somente no sistema basta clicar em cancelar.`}
+                    type="info"
+                    onConfirm={() => {
+                        handleLancamento(true);
+                        setIsConfirmLancamentoOpen(false); // Fechar o modal após a confirmação
+                    }}
+                    typeDlg='question'
+                    onCancel={() => {
+                        handleLancamento(false);
+                        setIsConfirmLancamentoOpen(false); // Fechar o modal após a confirmação
+                    }}
+                />
+            )}
+
             {/* Modal de Visualização da Cobrança */}
             {selectedBillingData && (
                 <BillingModal
@@ -308,7 +378,7 @@ export default function Cobrancas() {
                     onBaixa={handleBaixa}
                     onEstornar={handleEstornar}
                     onExcluir={confirmDelete}
-                    onLancamento={handleLancamento}
+                    onLancamento={confirmLancamento}
                 />
             )}
 
@@ -332,7 +402,7 @@ export default function Cobrancas() {
                             }
                             return acc;
                         }, {});
-                        if (selectedBillingData){
+                        if (selectedBillingData) {
                             handleBaixar(formData);
                         }
                         else {
