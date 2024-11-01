@@ -15,7 +15,7 @@ export default function Login() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const redirectTo = searchParams.get('redirect') || '/dasboard'; // Pega a URL de redirecionamento ou usa '/main' por padrão
+    const redirectTo = searchParams.get('redirect') || '/dashboard'; // Pega a URL de redirecionamento ou usa '/main' por padrão
 
     const handleLogin = (e: any) => {
         e.preventDefault(); // Impede o comportamento padrão do botão
