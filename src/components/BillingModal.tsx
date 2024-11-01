@@ -14,7 +14,7 @@ interface BillingModalProps {
 
 const BillingModal: React.FC<BillingModalProps> = ({ isOpen, onClose, billingData, onBaixa, onEstornar, onExcluir, onLancamento }) => {
     const [selectedMethod, setSelectedMethod] = useState<string>(''); // Estado para o método de envio de cobrança
-
+    const [selectedIndex, setSelectedIndex] = useState<number>(0);
     if (!isOpen) return null;
 
     const formatDate = (dateStr: string) =>
@@ -39,7 +39,7 @@ const BillingModal: React.FC<BillingModalProps> = ({ isOpen, onClose, billingDat
             <ModalContent>
                 <ModalHeader>Detalhes da Cobrança</ModalHeader>
                 <ModalBody>
-                    <Tabs initialSelectedIndex={0}>
+                    <Tabs>
                         {/* Aba Principal */}
                         <Tab title="Informações Principais">
                             <div className="space-y-4">
