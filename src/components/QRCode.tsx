@@ -1,17 +1,25 @@
 // components/QRScanner.js
-import { useEffect, useState } from 'react';
+'use client'
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios'
 import { Button } from '@nextui-org/react';
+import { CompanyContext } from '@/context/CompanyContext';
 
 const QRScanner = () => {
     const [qrCode, setQrCode] = useState('');
     const [isConnected, setIsConnected] = useState(false);
     const [data, setData] = useState(null);
+    const {company} = useContext(CompanyContext);
 
     useEffect(() => {
         const checkSessionStatus = async () => {
             try {
-                const statusResponse = await axios.get('http://localhost:8001/V1/session/status');
+                const formData = {
+                    id_empresa: company?.id_empresa,
+                    production_env: company?.asaas_mode,
+                    tokenApi: company?.asaas_api_key
+                }
+                const statusResponse = await axios.post('https://api.finsolve.com.br/V1/WAPI/session/status', formData);
                 if (statusResponse.data.status == 'not_logged_in') {
                     setIsConnected(false)
                 }
@@ -28,7 +36,12 @@ const QRScanner = () => {
 
         const fetchQrCode = async () => {
             try {
-                const qrResponse = await axios.get('http://localhost:8001/V1/session/status');
+                const formData = {
+                    id_empresa: company?.id_empresa,
+                    production_env: company?.asaas_mode,
+                    tokenApi: company?.asaas_api_key
+                }
+                const qrResponse = await axios.post('https://api.finsolve.com.br/V1/WAPI/session/status', formData);
                 setQrCode(qrResponse.data.qrCode); // ajuste o caminho conforme a estrutura da resposta
             } catch (error) {
                 console.error('Erro ao buscar QR Code:', error);
